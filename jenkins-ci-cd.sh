@@ -94,7 +94,7 @@ RUN_RESPONSE=$(curl -s --location --request POST "https://api.perfai.ai/api/v1/a
 # )
 
 
-echo "Run Response: $RUN_RESPONSE"
+#echo "Run Response: $RUN_RESPONSE"
 
 ### RUN_ID Prints ###
 RUN_ID=$(echo "$RUN_RESPONSE" | jq -r '.run_ids.sensitive')
@@ -138,7 +138,7 @@ if [ "$WAIT_FOR_COMPLETION" == "true" ]; then
           echo "No new issues detected. Build passed."
         else 
           echo "Build failed with new issues. New issue: $NEW_ISSUES"
-#          exit 1
+          exit 1
         fi
     fi 
 
