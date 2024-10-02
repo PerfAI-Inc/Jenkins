@@ -94,7 +94,7 @@ RUN_RESPONSE=$(curl -s --location --request POST "https://api.perfai.ai/api/v1/a
 # )
 
 
-#echo "Run Response: $RUN_RESPONSE"
+echo "Run Response: $RUN_RESPONSE"
 
 ### RUN_ID Prints ###
 RUN_ID=$(echo "$RUN_RESPONSE" | jq -r '.run_ids.sensitive')
