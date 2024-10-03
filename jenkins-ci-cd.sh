@@ -61,22 +61,13 @@ echo " "
 #     \"services\": [\"sensitive\"]
 # }")
 
-Get commit information from Jenkins environment variables
-COMMIT_ID=${GIT_COMMIT}
-COMMIT_DATE=$(date "+%F")  # Assuming you want the current date for commit date
-COMMIT_URL="https://github.com/${GIT_URL##*/}/commit/${COMMIT_ID}"  # Build commit URL from GIT_URL and COMMIT_ID
 
-# You can also use GIT_AUTHOR_NAME or GIT_COMMITTER_NAME for author information
-COMMIT_USER=${GIT_AUTHOR_NAME}
-REPO_NAME=$(basename -s .git ${GIT_URL})
+# Get commit information from Jenkins environment variables
+BUILD_NUMBER=${BUILD_NUMBER}
+BUILD_TIMESTAMP=$(date "+%F")
+BUILD_URL="http://34.41.124.85:8080/${JOB_NAME}/${BUILD_NUMBER}"
 
-echo "Commit ID: $COMMIT_ID"
-echo "Commit Date: $COMMIT_DATE"
-echo "Commit URL: $COMMIT_URL"
-echo "Commit User: $COMMIT_USER"
-echo "Repository Name: $REPO_NAME"
-
-# Step 2: Schedule API Privacy Tests
+### Step 2: Schedule API Privacy Tests ###
 RUN_RESPONSE=$(curl -s --location --request POST https://api.perfai.ai/api/v1/api-catalog/apps/schedule-run-multiple \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $ACCESS_TOKEN" \
@@ -84,11 +75,11 @@ RUN_RESPONSE=$(curl -s --location --request POST https://api.perfai.ai/api/v1/ap
     \"catalog_id\": \"${CATALOG_ID}\",
     \"services\": [\"sensitive\"],
     \"buildDetails\": {
-        \"commitId\": \"${COMMIT_ID}\",
-        \"commitUrl\": \"${COMMIT_URL}\",
-        \"commitUserName\": \"${COMMIT_USER}\",
-        \"commitDate\": \"${COMMIT_DATE}\",
-        \"repoName\": \"${REPO_NAME}\"
+        \"commitId\": \"${BUILD_NUMBER}\",
+        \"commitUrl\": \"${BUILD_URL}\",
+        \"commitUserName\": \"${BUILD_USER}\",
+        \"commitDate\": \"${BUILD_TIMESTAMP}\",
+        \"repoName\": \"${JOB_NAME}\"
     }
   }"
 )
