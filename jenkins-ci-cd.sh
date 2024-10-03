@@ -64,7 +64,7 @@ echo " "
 
 # Get commit information from Jenkins environment variables
 BUILD_TIMESTAMP=$(date "+%F")
-JENKINS_URL="http://34.41.124.85:8080/job/${JOB_NAME}/${BUILD_ID}"
+JENKINS_URL="http://34.41.124.85:8080/job/${JOB_NAME}/${BUILD_USER_ID}"
 
 
 ### Step 2: Schedule API Privacy Tests ###
@@ -77,7 +77,7 @@ RUN_RESPONSE=$(curl -s --location --request POST https://api.perfai.ai/api/v1/ap
     \"buildDetails\": {
         \"commitId\": \"${BUILD_ID}\",
         \"commitUrl\": \"${JENKINS_URL}\",
-        \"commitUserName\": \"${BUILD_USER}\",
+        \"commitUserName\": \"${BUILD_USER_ID}\",
         \"commitDate\": \"${BUILD_TIMESTAMP}\",
         \"repoName\": \"${JOB_NAME}\"
     }
