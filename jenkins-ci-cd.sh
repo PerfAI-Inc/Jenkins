@@ -63,9 +63,16 @@ echo " "
 
 
 # Get commit information from Jenkins environment variables
-BUILD_NUMBER=${BUILD_NUMBER}
+BUILD_USER_ID=${BUILD_USER_ID}
+BUILD_USER=${BUILD_USER}
+BUILD_USER_EMAIL=${BUILD_USER_EMAIL}
+
+echo "commitUserName: $BUILD_USER_ID"
+echo "commitUserName: $BUILD_USER"
+echo "commitUserName: $BUILD_USER_EMAIL"
+
 BUILD_TIMESTAMP=$(date "+%F")
-BUILD_URL="http://34.41.124.85:8080/${JOB_NAME}/${BUILD_NUMBER}"
+BUILD_URL="http://34.41.124.85:8080/job/${JOB_NAME}/${BUILD_NUMBER}"
 
 ### Step 2: Schedule API Privacy Tests ###
 RUN_RESPONSE=$(curl -s --location --request POST https://api.perfai.ai/api/v1/api-catalog/apps/schedule-run-multiple \
@@ -77,7 +84,7 @@ RUN_RESPONSE=$(curl -s --location --request POST https://api.perfai.ai/api/v1/ap
     \"buildDetails\": {
         \"commitId\": \"${BUILD_NUMBER}\",
         \"commitUrl\": \"${BUILD_URL}\",
-        \"commitUserName\": \"${BUILD_USER}\",
+        \"commitUserName\": \"${BUILD_USER_ID}\",
         \"commitDate\": \"${BUILD_TIMESTAMP}\",
         \"repoName\": \"${JOB_NAME}\"
     }
