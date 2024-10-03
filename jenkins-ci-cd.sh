@@ -43,7 +43,7 @@ TOKEN_RESPONSE=$(curl -s --location --request POST "https://api.perfai.ai/api/v1
 
 ACCESS_TOKEN=$(echo $TOKEN_RESPONSE | jq -r '.id_token')
 
-if [ -z "$ACCESS_TOKEN" ]; then
+if [ "$ACCESS_TOKEN" == "null" ]; then
     echo "Error: Could not retrieve access token"
     exit 1
 fi
@@ -53,45 +53,45 @@ echo " "
 
 
 ### Step 2: Trigger the AI Running ###
-RUN_RESPONSE=$(curl -s --location --request POST "https://api.perfai.ai/api/v1/api-catalog/apps/schedule-run-multiple" \
---header "Content-Type: application/json" \
---header "Authorization: Bearer $ACCESS_TOKEN" \
---data-raw "{
-    \"catalog_id\": \"${CATALOG_ID}\",
-    \"services\": [\"sensitive\"]
-}")
-
-# Get commit information from Jenkins environment variables
-# COMMIT_ID=${GIT_COMMIT}
-# COMMIT_DATE=$(date "+%F")  # Assuming you want the current date for commit date
-# COMMIT_URL="https://github.com/${GIT_URL##*/}/commit/${COMMIT_ID}"  # Build commit URL from GIT_URL and COMMIT_ID
-
-# # You can also use GIT_AUTHOR_NAME or GIT_COMMITTER_NAME for author information
-# COMMIT_USER=${GIT_AUTHOR_NAME}
-# REPO_NAME=$(basename -s .git ${GIT_URL})
-
-# echo "Commit ID: $COMMIT_ID"
-# echo "Commit Date: $COMMIT_DATE"
-# echo "Commit URL: $COMMIT_URL"
-# echo "Commit User: $COMMIT_USER"
-# echo "Repository Name: $REPO_NAME"
-
-# # Step 2: Schedule API Privacy Tests
-# RUN_RESPONSE=$(curl -s --location --request POST https://api.perfai.ai/api/v1/api-catalog/apps/schedule-run-multiple \
-#   -H "Content-Type: application/json" \
-#   -H "Authorization: Bearer $ACCESS_TOKEN" \
-#   -d "{
+# RUN_RESPONSE=$(curl -s --location --request POST "https://api.perfai.ai/api/v1/api-catalog/apps/schedule-run-multiple" \
+# --header "Content-Type: application/json" \
+# --header "Authorization: Bearer $ACCESS_TOKEN" \
+# --data-raw "{
 #     \"catalog_id\": \"${CATALOG_ID}\",
-#     \"services\": [\"sensitive\"],
-#     \"buildDetails\": {
-#         \"commitId\": \"${COMMIT_ID}\",
-#         \"commitUrl\": \"${COMMIT_URL}\",
-#         \"commitUserName\": \"${COMMIT_USER}\",
-#         \"commitDate\": \"${COMMIT_DATE}\",
-#         \"repoName\": \"${REPO_NAME}\"
-#     }
-#   }"
-# )
+#     \"services\": [\"sensitive\"]
+# }")
+
+Get commit information from Jenkins environment variables
+COMMIT_ID=${GIT_COMMIT}
+COMMIT_DATE=$(date "+%F")  # Assuming you want the current date for commit date
+COMMIT_URL="https://github.com/${GIT_URL##*/}/commit/${COMMIT_ID}"  # Build commit URL from GIT_URL and COMMIT_ID
+
+# You can also use GIT_AUTHOR_NAME or GIT_COMMITTER_NAME for author information
+COMMIT_USER=${GIT_AUTHOR_NAME}
+REPO_NAME=$(basename -s .git ${GIT_URL})
+
+echo "Commit ID: $COMMIT_ID"
+echo "Commit Date: $COMMIT_DATE"
+echo "Commit URL: $COMMIT_URL"
+echo "Commit User: $COMMIT_USER"
+echo "Repository Name: $REPO_NAME"
+
+# Step 2: Schedule API Privacy Tests
+RUN_RESPONSE=$(curl -s --location --request POST https://api.perfai.ai/api/v1/api-catalog/apps/schedule-run-multiple \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -d "{
+    \"catalog_id\": \"${CATALOG_ID}\",
+    \"services\": [\"sensitive\"],
+    \"buildDetails\": {
+        \"commitId\": \"${COMMIT_ID}\",
+        \"commitUrl\": \"${COMMIT_URL}\",
+        \"commitUserName\": \"${COMMIT_USER}\",
+        \"commitDate\": \"${COMMIT_DATE}\",
+        \"repoName\": \"${REPO_NAME}\"
+    }
+  }"
+)
 
 
 #echo "Run Response: $RUN_RESPONSE"
@@ -105,7 +105,7 @@ echo "Run Response: $RUN_RESPONSE"
 echo " "
 echo "Run ID is: $RUN_ID"
 
-if [ -z "$RUN_ID" ]; then
+if [ "$RUN_ID" == "null" ]; then
   echo "Error: Run ID not found in the response"
   exit 1
 fi
