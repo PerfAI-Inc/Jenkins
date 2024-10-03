@@ -63,12 +63,8 @@ echo " "
 
 
 # Get commit information from Jenkins environment variables
-BUILD_USER=${GITHUB_SHA}
 BUILD_TIMESTAMP=$(date "+%F")
 JENKINS_URL="http://34.41.124.85:8080/job/${JOB_NAME}/${BUILD_ID}"
-
-BUILD_TRIGGER_BY=$(curl -k --silent ${BUILD_URL}/api/xml | tr '<' '\n' | egrep '^userId>|^userName>' | sed 's/.*>//g' | sed -e '1s/$/ \//g' | tr '\n' ' ')
-echo "${BUILD_TRIGGER_BY}"
 
 
 ### Step 2: Schedule API Privacy Tests ###
