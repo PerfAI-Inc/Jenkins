@@ -64,7 +64,7 @@ echo " "
 
 # Get commit information from Jenkins environment variables
 BUILD_TIMESTAMP=$(date "+%F")
-JENKINS_URL="http://34.41.124.85:8080/job/${JOB_NAME}/${BUILD_USER_ID}"
+JENKINS_URL="http://34.41.124.85:8080/job/${JOB_NAME}/${BUILD_ID}"
 
 
 ### Step 2: Schedule API Privacy Tests ###
